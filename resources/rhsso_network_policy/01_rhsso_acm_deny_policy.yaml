@@ -23,7 +23,6 @@ spec:
             exclude:
               - kube-*
               - openshift-*
-            include: "*"
           object-templates:
             - complianceType: musthave
               objectDefinition:
