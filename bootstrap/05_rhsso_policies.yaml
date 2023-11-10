@@ -18,7 +18,7 @@ spec:
           name: cluster-03
   template:
     metadata:
-      name: rhsso-network-policy-{{cluster}}
+      name: rhsso-network-policy-{{name}}
     spec:
       project: devsecops-demo
       source:
