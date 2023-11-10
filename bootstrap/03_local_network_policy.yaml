@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: local-network-policy
+  namespace: openshift-gitops
+spec:
+  generators: 
+  - clusters: 
+      selector: 
+        matchLabels: 
+          argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: local-network-policy-{{cluster}}
+    spec:
+      project: devsecops-demo
+      source:
+        repoURL: https://github.com/Everything-is-Code/devsecops.git
+        targetRevision: main
+        path: resources/local_network_policy
+      destination:
+        server: "{{server}}"
+

@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: global-network-policy
+  namespace: openshift-gitops
+spec:
+  generators: 
+  - clusters: 
+      selector: 
+        matchLabels: 
+          argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: global-network-policy-{{cluster}}
+    spec:
+      project: devsecops-demo
+      source:
+        repoURL: https://github.com/Everything-is-Code/devsecops.git
+        targetRevision: main
+        path: resources/global_network_policy
+      destination:
+        server: "{{server}}"
+

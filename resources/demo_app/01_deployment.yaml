@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: tetris-4-k8s
+  namespace: tetris-4-k8s
+  labels:
+    app: tetris-4-k8s
+    app.kubernetes.io/component: tetris-4-k8s
+    app.kubernetes.io/instance: tetris-4-k8s
+    app.kubernetes.io/name: tetris-4-k8s
+    app.kubernetes.io/part-of: tetris-4-k8s-app
+    app.openshift.io/runtime: js
+    app.openshift.io/runtime-namespace: tetris-4-k8s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tetris-4-k8s
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tetris-4-k8s
+        deployment: tetris-4-k8s
+    spec:
+      containers:
+        - name: tetris-4-k8s
+          image: quay.io/ilago/tetris-4-k8s          
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

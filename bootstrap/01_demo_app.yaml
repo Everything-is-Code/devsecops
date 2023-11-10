@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: devsecops-demo
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: demo-app
+  namespace: openshift-gitops
+spec:
+  generators: 
+  - clusters: 
+      selector: 
+        matchLabels: 
+          argocd.argoproj.io/secret-type: cluster
+  template:
+    metadata:
+      name: demo-app-{{name}}
+    spec:
+      project: devsecops-demo
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: https://github.com/Everything-is-Code/devsecops.git
+        targetRevision: main
+        path: resources/demo_app
+      destination:
+        server: "{{server}}"

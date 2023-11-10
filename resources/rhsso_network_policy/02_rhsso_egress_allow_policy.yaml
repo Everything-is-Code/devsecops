@@ -1,0 +1,26 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-pgsql-ocpdns
+  namespace: rhsso-prod
+spec:
+  podSelector: {}
+  egress:
+    - ports:
+        - protocol: TCP
+          port: 5432
+      to:
+        - podSelector: {}
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: postgres
+    - ports:
+        - protocol: UDP
+          port: 5353
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-dns
+  policyTypes:
+    - Egress
+status: {}

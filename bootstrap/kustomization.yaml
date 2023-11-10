@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonAnnotations:
+  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+resources:
+- 00_argo_project_demo.yaml
+- 01_demo_app.yaml
+- 04_rhsso.yaml
+- 02_global_network_policy.yaml
+- 03_local_network_policy.yaml

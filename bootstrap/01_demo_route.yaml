@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: demo-route
+  namespace: openshift-gitops
+spec:
+  generators:
+  - clusters: 
+      selector: 
+        matchLabels: 
+          name: cluster-02
+  - clusters: 
+      selector: 
+        matchLabels: 
+          name: cluster-03
+  template:
+    metadata:
+      name: demo-route-{{name}}
+    spec:
+      project: devsecops-demo
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: https://github.com/Everything-is-Code/devsecops.git
+        targetRevision: main
+        path: resources/demo_route
+      destination:
+        server: "{{server}}"

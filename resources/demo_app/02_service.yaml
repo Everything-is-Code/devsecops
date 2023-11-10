@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tetris-4-k8s
+  namespace: tetris-4-k8s
+  labels:
+    app: tetris-4-k8s
+    app.kubernetes.io/component: tetris-4-k8s
+    app.kubernetes.io/instance: tetris-4-k8s
+    app.kubernetes.io/name: tetris-4-k8s
+    app.kubernetes.io/part-of: tetris-4-k8s-app
+    app.openshift.io/runtime-version: latest
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: tetris-4-k8s
+    deployment: tetris-4-k8s

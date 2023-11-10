@@ -1,0 +1,54 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: deny-all-policy
+  namespace: openshift-gitops
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  disabled: false
+  remediationAction: inform
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: deny-all-policy
+        spec:
+          remediationAction: inform
+          severity: low
+          namespaceSelector:
+            exclude:
+              - kube-*
+              - openshift-*
+            include: "*"
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: NetworkPolicy
+                apiVersion: networking.k8s.io/v1
+                metadata:
+                  name: deny-all-policy
+                  namespace: rhsso-prod
+                spec:
+                  podSelector: {}
+                  policyTypes:
+                    - Ingress
+                    - Egress
+          pruneObjectBehavior: DeleteAll
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: deny-all-policy-placement
+  namespace: openshift-gitops
+placementRef:
+  name: gitops-clusters
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+subjects:
+  - name: deny-all-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
