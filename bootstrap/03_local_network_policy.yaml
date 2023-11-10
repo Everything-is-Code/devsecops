@@ -14,7 +14,7 @@ spec:
           argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: local-network-policy-{{cluster}}
+      name: local-network-policy-{{name}}
     spec:
       project: devsecops-demo
       source:

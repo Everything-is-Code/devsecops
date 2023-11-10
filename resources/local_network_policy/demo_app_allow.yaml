@@ -9,7 +9,7 @@ spec:
   ingress:
     - ports:
         - protocol: TCP
-          port: 8443
+          port: 8080
   egress:
     - ports:
         - protocol: UDP

@@ -14,7 +14,7 @@ spec:
           argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: global-network-policy-{{cluster}}
+      name: global-network-policy-{{name}}
     spec:
       project: devsecops-demo
       source:
